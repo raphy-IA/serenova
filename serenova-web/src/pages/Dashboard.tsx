@@ -274,7 +274,7 @@ const Dashboard = () => {
                                 <div className="kpi-progress-bar">
                                     <div className="kpi-progress-fill info" style={{ width: `${stats?.patrimoine.tauxOccupation}%` }}></div>
                                 </div>
-                                <div className="kpi-subtext">{(stats?.patrimoine.totalEspaces || 0) - (stats?.patrimoine.espacesLibres || 0)} occupés • {stats?.patrimoine.espacesLibres} libres</div>
+                                <div className="kpi-subtext">{(stats?.patrimoine?.totalEspaces || 0) - (stats?.patrimoine?.espacesLibres || 0)} occupés • {stats?.patrimoine?.espacesLibres || 0} libres</div>
                             </div>
                         </div>
                     </>
