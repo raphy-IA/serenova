@@ -44,7 +44,7 @@ export const alertsController = {
 
             const alert = await prisma.alerte.update({
                 where: { id: id as string },
-                data: { statut: statut as string }
+                data: { statut: statut as any }
             });
 
             res.json({ success: true, message: 'Statut de l\'alerte mis à jour.', data: alert });

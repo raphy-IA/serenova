@@ -8,7 +8,6 @@ services:
     environment:
       - DATABASE_URL=${DATABASE_URL}
       - JWT_SECRET=${JWT_SECRET}
-      - DB_NAME=${DB_NAME}
       - PORT=3000
     networks:
       - serenova-network
