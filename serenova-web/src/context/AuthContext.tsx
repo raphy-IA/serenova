@@ -27,7 +27,7 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 // Configure generic axios instance
 export const api = axios.create({
-    baseURL: `http://${window.location.hostname}:3000/api`,
+    baseURL: import.meta.env.VITE_API_URL || '/api',
 });
 
 // Axios interceptor for setting the token and impersonation headers
