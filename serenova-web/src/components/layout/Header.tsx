@@ -1,3 +1,4 @@
+import React from 'react';
 import { Search, Bell, Moon, Sun, AlertTriangle, Clock, CheckCircle, X, LogOut, Info, Activity } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
 import { api } from '../../context/AuthContext';
