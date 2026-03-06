@@ -19,7 +19,7 @@ interface Alerte {
     };
 }
 
-const TYPE_ICON: Record<string, JSX.Element> = {
+const TYPE_ICON: Record<string, React.ReactNode> = {
     IMPAYE: <AlertTriangle size={16} color="var(--color-error)" />,
     BAIL_EXPIRANT: <Clock size={16} color="var(--color-warning)" />,
     INFO: <CheckCircle size={16} color="var(--color-secondary)" />,
