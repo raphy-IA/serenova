@@ -20,6 +20,7 @@ export const prisma = basePrisma.$extends({
                 ];
 
                 if (context?.organisationId && modelsWithOrg.includes(model)) {
+                    console.log(`[PrismaTenant] Applying filter to ${model} (${operation}) for org ${context.organisationId}`);
                     // S'assurer que args existe
                     args = args || {};
 
