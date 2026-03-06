@@ -14,9 +14,9 @@ export const prisma = basePrisma.$extends({
                 // et qu'on n'est pas SUPER_ADMIN (ou si on veut forcer l'isolation même pour lui)
                 // Note: On exclut les modèles qui ne sont pas liés à une organisation (ex: Organisation elle-même, Plan, etc.)
                 const modelsWithOrg = [
-                    'Site', 'Espace', 'Locataire', 'Bail', 'Paiement',
+                    'User', 'Site', 'Locataire', 'Bail', 'Paiement',
                     'Alerte', 'Subscription', 'AuditLog', 'DocumentTemplate',
-                    'SaaSInvoice', 'EvolutionBail'
+                    'SaaSInvoice'
                 ];
 
                 if (context?.organisationId && modelsWithOrg.includes(model)) {
