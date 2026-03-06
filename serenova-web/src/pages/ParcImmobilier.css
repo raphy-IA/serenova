@@ -1,0 +1,135 @@
+/* ================================================
+   PARC IMMOBILIER PAGE STYLES
+   ================================================ */
+
+.parc-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+/* ── Stat pills ── */
+.stat-pills {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.stat-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.4rem 1rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-surface);
+    color: var(--text-primary);
+    font-size: 0.875rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.stat-pill:hover {
+    border-color: var(--pill-color, var(--color-secondary));
+    color: var(--pill-color, var(--color-secondary));
+}
+
+.stat-pill.active {
+    background: var(--pill-bg, rgba(37, 99, 235, 0.1));
+    border-color: var(--pill-color, var(--color-secondary));
+    color: var(--pill-color, var(--color-secondary));
+}
+
+.pill-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: var(--pill-color, var(--color-secondary));
+}
+
+/* ── Active view button ── */
+.active-view {
+    background: rgba(37, 99, 235, 0.1) !important;
+    border-color: var(--color-secondary) !important;
+    color: var(--color-secondary) !important;
+}
+
+/* ── Grid View ── */
+.parc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+    gap: 1.25rem;
+}
+
+.parc-card {
+    padding: 1.25rem;
+    text-decoration: none;
+    color: var(--text-primary);
+    display: block;
+    transition: transform 0.2s, box-shadow 0.2s;
+    cursor: pointer;
+}
+
+.parc-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 12px 30px rgba(0, 0, 0, 0.15);
+}
+
+.parc-card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+}
+
+.parc-card-icon {
+    width: 40px;
+    height: 40px;
+    border-radius: var(--radius-md);
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--color-secondary);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+/* ── Pagination ── */
+.pagination {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding-top: 0.5rem;
+}
+
+/* ── Table action ── */
+.table-action {
+    color: var(--color-secondary);
+    font-weight: 500;
+    text-decoration: none;
+    font-size: 0.875rem;
+}
+
+.table-action:hover {
+    text-decoration: underline;
+}
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+    .parc-page {
+        padding: 1rem;
+    }
+
+    .parc-grid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+}
+
+@media (max-width: 560px) {
+    .parc-grid {
+        grid-template-columns: 1fr;
+    }
+}

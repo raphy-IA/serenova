@@ -1,0 +1,532 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                String        @id @default(cuid())
+  email             String        @unique
+  passwordHash      String
+  firstName         String
+  lastName          String
+  phone             String?
+  role              Role          @default(GESTIONNAIRE)
+  organisationId    String?
+  createdAt         DateTime      @default(now())
+  updatedAt         DateTime      @updatedAt
+  fcmToken          String?
+  fcmTokenUpdatedAt DateTime?
+  locataires        Locataire[]
+  sites             Site[]
+  organisation      Organisation? @relation(fields: [organisationId], references: [id])
+  auditLogs         AuditLog[]
+  saasConfigs       SaaSConfig[]
+}
+
+model Organisation {
+  id                String             @id @default(cuid())
+  nom               String             @unique
+  type              TypeOrganisation   @default(SOCIETE)
+  email             String?            @unique
+  telephone         String?
+  adresse           String?
+  ville             String?
+  statut            String             @default("ACTIF")
+  createdAt         DateTime           @default(now())
+  updatedAt         DateTime           @updatedAt
+  users             User[]
+  sites             Site[]
+  locataires        Locataire[]
+  baux              Bail[]
+  paiements         Paiement[]
+  alertes           Alerte[]
+  subscription      Subscription?
+  documentTemplates DocumentTemplate[]
+  saasInvoices      SaaSInvoice[]
+}
+
+model Site {
+  id                  String        @id @default(cuid())
+  userId              String
+  organisationId      String?
+  nom                 String
+  type                TypeSite
+  adresse             String
+  ville               String
+  codePostal          String
+  pays                String
+  latitude            Float?
+  longitude           Float?
+  nbEspaces           Int
+  anneeConstruction   Int?
+  surface             Float?
+  nbEtages            Int?
+  ascenseur           Boolean       @default(false)
+  parking             Boolean       @default(false)
+  statut              StatutSite    @default(ACTIF)
+  photos              String[]
+  description         String?
+  gestionnaire        String?
+  assuranceCompagnie  String?
+  assuranceRef        String?
+  assuranceExpiration DateTime?
+  equipements         String[]
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  espaces             Espace[]
+  user                User          @relation(fields: [userId], references: [id])
+  organisation        Organisation? @relation(fields: [organisationId], references: [id])
+}
+
+model Espace {
+  id            String       @id @default(cuid())
+  siteId        String
+  identifiant   String
+  label         String?
+  type          TypeEspace
+  etage         Int?
+  numeroPorce   String?
+  surface       Float?
+  surfaceTotale Float?
+  nbPieces      Int?
+  nbChambres    Int?
+  nbSallesBain  Int?
+  cuisine       TypeCuisine?
+  balcon        Boolean      @default(false)
+  exposition    String?
+  chauffage     String?
+  meuble        TypeMeuble   @default(NON_MEUBLE)
+  etatGeneral   EtatGeneral  @default(BON)
+  equipements   String[]
+  photos        String[]
+  statut        StatutEspace @default(LIBRE)
+  createdAt     DateTime     @default(now())
+  updatedAt     DateTime     @updatedAt
+  baux          Bail[]
+  site          Site         @relation(fields: [siteId], references: [id])
+  loyer         Loyer?
+}
+
+model Loyer {
+  id                String       @id @default(cuid())
+  espaceId          String       @unique
+  montantBase       Decimal
+  charges           Decimal      @default(0)
+  typeCharges       TypeCharges  @default(INCLUSES)
+  caution           Decimal?
+  moisAvance        Int          @default(1)
+  devise            String       @default("FCFA")
+  periodicite       Periodicite  @default(MENSUELLE)
+  jourEcheance      Int          @default(5)
+  indexation        Boolean      @default(false)
+  indexIndice       String?
+  indexPourcentage  Decimal?
+  delaiGrace        Int          @default(5)
+  typePenalite      TypePenalite @default(TAUX_FIXE)
+  penaliteTaux      Decimal?
+  penaliteMontant   Decimal?
+  createdAt         DateTime     @default(now())
+  updatedAt         DateTime     @updatedAt
+  cautionNombreMois Int?         @default(1)
+  espace            Espace       @relation(fields: [espaceId], references: [id])
+}
+
+model Locataire {
+  id                  String        @id @default(cuid())
+  civilite            Civilite
+  nom                 String
+  prenom              String?
+  raisonSociale       String?
+  dateNaissance       DateTime?
+  nationalite         String?
+  pieceIdentite       String?
+  numIdentite         String?
+  photoIdentite       String?
+  telephone           String
+  telephoneSecondaire String?
+  email               String?
+  employeur           String?
+  revenus             Decimal?
+  garant              Json?
+  documents           String[]
+  createdAt           DateTime      @default(now())
+  updatedAt           DateTime      @updatedAt
+  userId              String?
+  organisationId      String?
+  baux                Bail[]
+  user                User?         @relation(fields: [userId], references: [id])
+  organisation        Organisation? @relation(fields: [organisationId], references: [id])
+}
+
+model Bail {
+  id                 String          @id @default(cuid())
+  espaceId           String
+  locataireId        String
+  dateEntree         DateTime
+  dateFin            DateTime?
+  dureesMois         Int?
+  renouvellementAuto Boolean         @default(true)
+  preivisMois        Int             @default(1)
+  dateSortie         DateTime?
+  motifSortie        String?
+  pdfBail            String?
+  statut             StatutBail      @default(ACTIF)
+  createdAt          DateTime        @default(now())
+  updatedAt          DateTime        @updatedAt
+  cautionNombreMois  Int?
+  montantCaution     Decimal?
+  loyerMensuel       Decimal?
+  nbMoisAvance       Int?            @default(1)
+  organisationId     String?
+  alertes            Alerte[]
+  espace             Espace          @relation(fields: [espaceId], references: [id])
+  locataire          Locataire       @relation(fields: [locataireId], references: [id])
+  organisation       Organisation?   @relation(fields: [organisationId], references: [id])
+  paiements          Paiement[]
+  evolutions         EvolutionBail[]
+}
+
+model EvolutionBail {
+  id                  String   @id @default(cuid())
+  bailId              String
+  bail                Bail     @relation(fields: [bailId], references: [id])
+  nouveauLoyerMensuel Decimal
+  dateEffet           DateTime
+  applique            Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
+}
+
+model Paiement {
+  id             String         @id @default(cuid())
+  bailId         String
+  typePaiement   TypePaiement
+  moisConcerne   DateTime?
+  montant        Decimal
+  datePaiement   DateTime
+  modePaiement   ModePaiement
+  reference      String?
+  notes          String?
+  quittancePdf   String?
+  statut         StatutPaiement @default(VALIDE)
+  organisationId String?
+  createdAt      DateTime       @default(now())
+  bail           Bail           @relation(fields: [bailId], references: [id])
+  organisation   Organisation?  @relation(fields: [organisationId], references: [id])
+}
+
+model Alerte {
+  id             String        @id @default(cuid())
+  bailId         String
+  type           TypeAlerte
+  message        String
+  dateEcheance   DateTime
+  dateSent       DateTime?
+  statut         StatutAlerte  @default(EN_ATTENTE)
+  organisationId String?
+  createdAt      DateTime      @default(now())
+  bail           Bail          @relation(fields: [bailId], references: [id])
+  organisation   Organisation? @relation(fields: [organisationId], references: [id])
+}
+
+enum Role {
+  SUPER_ADMIN
+  SUPPORT
+  ADMIN
+  GESTIONNAIRE
+  CONCIERGE
+  LECTEUR
+}
+
+model AuditLog {
+  id             String   @id @default(cuid())
+  userId         String?
+  organisationId String?
+  action         String
+  entityType     String?
+  entityId       String?
+  oldValue       Json?
+  newValue       Json?
+  metadata       Json?
+  createdAt      DateTime @default(now())
+
+  user User? @relation(fields: [userId], references: [id])
+}
+
+model Plan {
+  id            String          @id @default(cuid())
+  nom           String          @unique
+  prix          Decimal
+  periodicite   PeriodicitePlan @default(MENSUEL)
+  limites       Json
+  createdAt     DateTime        @default(now())
+  updatedAt     DateTime        @updatedAt
+  subscriptions Subscription[]
+}
+
+model Subscription {
+  id                 String             @id @default(cuid())
+  organisationId     String             @unique
+  planId             String
+  statut             SubscriptionStatut @default(ACTIF)
+  dateDebut          DateTime           @default(now())
+  dateFin            DateTime?
+  autoRenouvellement Boolean            @default(true)
+  currentPeriodEnd   DateTime?
+  cancelAtPeriodEnd  Boolean            @default(false)
+  createdAt          DateTime           @default(now())
+  updatedAt          DateTime           @updatedAt
+
+  organisation Organisation  @relation(fields: [organisationId], references: [id])
+  plan         Plan          @relation(fields: [planId], references: [id])
+  invoices     SaaSInvoice[]
+}
+
+enum PeriodicitePlan {
+  MENSUEL
+  ANNUEL
+}
+
+enum SubscriptionStatut {
+  ACTIF
+  SUSPENDU
+  EXPIRE
+  RESILIE
+}
+
+enum TypeSite {
+  RESIDENTIEL
+  COMMERCIAL
+  MIXTE
+  VILLA
+  ETUDIANT
+  IMMEUBLE_RAPPORT
+}
+
+enum StatutSite {
+  ACTIF
+  INACTIF
+  EN_TRAVAUX
+}
+
+enum TypeEspace {
+  STUDIO
+  T1
+  T2
+  T3
+  T4
+  T5
+  T6_PLUS
+  BUREAU
+  LOCAL_COMMERCIAL
+  ENTREPOT
+  PARKING
+  VILLA
+  CHAMBRE
+}
+
+enum TypeCuisine {
+  OUVERTE
+  FERMEE
+  KITCHENETTE
+  AUCUNE
+}
+
+enum TypeMeuble {
+  NON_MEUBLE
+  MEUBLE
+  SEMI_MEUBLE
+}
+
+enum EtatGeneral {
+  EXCELLENT
+  BON
+  MOYEN
+  A_RENOVER
+}
+
+enum StatutEspace {
+  LIBRE
+  OCCUPE
+  RESERVE
+  EN_TRAVAUX
+}
+
+enum TypeCharges {
+  INCLUSES
+  PROVISION
+  REELLES
+}
+
+enum Periodicite {
+  MENSUELLE
+  TRIMESTRIELLE
+  ANNUELLE
+}
+
+enum TypePenalite {
+  TAUX_FIXE
+  MONTANT_JOUR
+  AUCUNE
+}
+
+enum Civilite {
+  M
+  MME
+  SOCIETE
+}
+
+enum StatutBail {
+  ACTIF
+  EXPIRE
+  RESILIE
+  ANNULE
+  SUSPENDU
+}
+
+enum TypePaiement {
+  LOYER
+  CAUTION
+  AVANCE
+  FRAIS_ENTREE
+  PENALITE
+  AUTRE
+}
+
+enum ModePaiement {
+  ESPECES
+  VIREMENT
+  CHEQUE
+  MOBILE_MONEY
+  AUTRE
+}
+
+enum StatutPaiement {
+  VALIDE
+  ANNULE
+}
+
+enum TypeAlerte {
+  IMPAYE
+  BAIL_EXPIRANT
+  CAUTION_MANQUANTE
+  ASSURANCE_EXPIRANTE
+  ESPACE_VACANT
+}
+
+enum StatutAlerte {
+  EN_ATTENTE
+  ENVOYEE
+  RESOLUE
+  IGNOREE
+}
+
+enum TypeOrganisation {
+  SOCIETE
+  INDIVIDU
+}
+
+model Announcement {
+  id        String           @id @default(cuid())
+  titre     String
+  message   String
+  type      TypeAnnouncement @default(INFO)
+  actif     Boolean          @default(true)
+  createdAt DateTime         @default(now())
+  updatedAt DateTime         @updatedAt
+}
+
+model DocumentTemplate {
+  id             String       @id @default(cuid())
+  nom            String
+  type           TypeTemplate
+  contentHtml    String
+  isGlobal       Boolean      @default(true) // Si false, appartient à une organisation spécifique
+  organisationId String?
+  createdAt      DateTime     @default(now())
+  updatedAt      DateTime     @updatedAt
+
+  organisation Organisation? @relation(fields: [organisationId], references: [id])
+}
+
+enum TypeAnnouncement {
+  INFO
+  WARNING
+  MAINTENANCE
+  SUCCESS
+}
+
+enum TypeTemplate {
+  CONTRAT_BAIL
+  QUITTANCE_LOYER
+  ETAT_DES_LIEUX
+  MISE_EN_DEMEURE
+  RECU_PAIEMENT
+}
+
+model SaaSConfig {
+  id                  String  @id @default(cuid())
+  stripePublicKey     String?
+  stripeSecretKey     String?
+  stripeWebhookSecret String?
+  momoApiKey          String?
+  momoApiSecret       String?
+  momoMerchantId      String?
+  paypalClientId      String?
+  paypalSecret        String?
+
+  updatedAt   DateTime @updatedAt
+  updatedById String?
+  updatedBy   User?    @relation(fields: [updatedById], references: [id])
+}
+
+model SaaSInvoice {
+  id                 String             @id @default(cuid())
+  subscriptionId     String
+  subscription       Subscription       @relation(fields: [subscriptionId], references: [id])
+  organisationId     String
+  organisation       Organisation       @relation(fields: [organisationId], references: [id])
+  amount             Decimal
+  status             SaaSInvoiceStatus  @default(PENDING)
+  paymentMethod      SaaSPaymentMethod?
+  dueDate            DateTime
+  paidAt             DateTime?
+  reference          String?            @unique
+  billingPeriodStart DateTime
+  billingPeriodEnd   DateTime
+
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+  transactions SaaSTransaction[]
+}
+
+model SaaSTransaction {
+  id              String            @id @default(cuid())
+  invoiceId       String
+  invoice         SaaSInvoice       @relation(fields: [invoiceId], references: [id])
+  amount          Decimal
+  paymentMethod   SaaSPaymentMethod
+  status          String
+  reference       String?
+  providerPayload Json?
+
+  createdAt DateTime @default(now())
+}
+
+enum SaaSInvoiceStatus {
+  PENDING
+  PAID
+  FAILED
+  CANCELED
+}
+
+enum SaaSPaymentMethod {
+  MANUAL
+  STRIPE
+  PAYPAL
+  MOBILE_MONEY
+}

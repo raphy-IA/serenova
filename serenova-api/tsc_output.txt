@@ -1,0 +1,10 @@
+src/modules/announcements/announcements.controller.ts(46,90): error TS2322: Type 'string | string[]' is not assignable to type 'string | undefined'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/announcements/announcements.controller.ts(52,26): error TS2322: Type 'string | string[]' is not assignable to type 'string | undefined'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/announcements/announcements.controller.ts(65,90): error TS2322: Type 'string | string[]' is not assignable to type 'string | undefined'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/announcements/announcements.controller.ts(70,57): error TS2322: Type 'string | string[]' is not assignable to type 'string | undefined'.
+  Type 'string[]' is not assignable to type 'string'.
+src/modules/announcements/announcements.routes.ts(4,26): error TS2307: Cannot find module '../../middleware/validate.middleware' or its corresponding type declarations.
+src/modules/announcements/announcements.schema.ts(9,13): error TS2353: Object literal may only specify known properties, and 'errorMap' does not exist in type '{ error?: string | $ZodErrorMap<$ZodIssueInvalidValue<unknown>> | undefined; message?: string | undefined; }'.

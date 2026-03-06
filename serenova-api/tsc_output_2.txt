@@ -1,0 +1,1 @@
+src/modules/announcements/announcements.routes.ts(4,10): error TS2305: Module '"../../middleware/validation.middleware"' has no exported member 'validate'.

@@ -1,0 +1,121 @@
+.baux-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.status-badge.resilie,
+.status-badge.résilié {
+    background-color: #FEE2E2;
+    color: #991B1B;
+}
+
+.status-badge.expire {
+    background-color: #FEF3C7;
+    color: #92400E;
+}
+
+.baux-list .info-item svg {
+    color: var(--text-muted);
+}
+
+/* ── Alert banner ── */
+.alert-banner {
+    display: flex;
+    gap: 0.75rem;
+    flex-wrap: wrap;
+}
+
+.alert-pill {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.6rem 1.1rem;
+    border-radius: 999px;
+    font-size: 0.875rem;
+    font-weight: 500;
+    border: 1.5px solid transparent;
+    cursor: default;
+}
+
+.alert-pill.clickable {
+    cursor: pointer;
+}
+
+.alert-pill.clickable:hover {
+    opacity: 0.85;
+}
+
+.alert-danger {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--color-error);
+    border-color: rgba(239, 68, 68, 0.3);
+}
+
+.alert-warning {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--color-warning);
+    border-color: rgba(245, 158, 11, 0.3);
+}
+
+/* ── Row highlighting ── */
+tr.row-danger {
+    background: rgba(239, 68, 68, 0.05) !important;
+    border-left: 3px solid var(--color-error);
+}
+
+tr.row-warning {
+    background: rgba(245, 158, 11, 0.05) !important;
+    border-left: 3px solid var(--color-warning);
+}
+
+/* ── Alert tags (per-cell) ── */
+.alert-tag {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.3rem;
+    padding: 0.2rem 0.5rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    white-space: nowrap;
+}
+
+.alert-tag-danger {
+    background: rgba(239, 68, 68, 0.12);
+    color: var(--color-error);
+}
+
+.alert-tag-warning {
+    background: rgba(245, 158, 11, 0.12);
+    color: var(--color-warning);
+}
+
+/* ── Statut filter pills ── */
+.statut-pill {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.statut-pill:hover {
+    border-color: var(--pill-color, var(--color-secondary));
+    color: var(--pill-color, var(--color-secondary));
+}
+
+.statut-pill.active {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: var(--pill-color, var(--color-secondary));
+    color: var(--pill-color, var(--color-secondary));
+    font-weight: 600;
+}

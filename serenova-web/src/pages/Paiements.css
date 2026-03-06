@@ -1,0 +1,80 @@
+.paiements-page {
+    padding: 2rem;
+    max-width: 1400px;
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+}
+
+.font-700 {
+    font-weight: 700;
+}
+
+.text-success {
+    color: var(--color-success);
+}
+
+.mode-badge {
+    background-color: var(--bg-subtle);
+    padding: 0.25rem 0.5rem;
+    border-radius: 4px;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: var(--text-secondary);
+}
+
+/* ── Type badges ── */
+.type-badge {
+    display: inline-block;
+    padding: 0.25rem 0.625rem;
+    border-radius: 999px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.type-loyer {
+    background: rgba(37, 99, 235, 0.1);
+    color: var(--color-secondary);
+}
+
+.type-caution {
+    background: rgba(139, 92, 246, 0.1);
+    color: var(--color-accent);
+}
+
+.type-avance {
+    background: var(--color-success-bg);
+    color: var(--color-success);
+}
+
+.type-frais_entree {
+    background: var(--color-warning-bg);
+    color: var(--color-warning);
+}
+
+/* ── Filter pills (shared) ── */
+.statut-pill {
+    padding: 0.35rem 0.9rem;
+    border-radius: 999px;
+    border: 1.5px solid var(--border-light);
+    background: var(--bg-surface);
+    color: var(--text-muted);
+    font-size: 0.8rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s;
+    white-space: nowrap;
+}
+
+.statut-pill:hover {
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+}
+
+.statut-pill.active {
+    background: rgba(37, 99, 235, 0.1);
+    border-color: var(--color-secondary);
+    color: var(--color-secondary);
+    font-weight: 600;
+}
