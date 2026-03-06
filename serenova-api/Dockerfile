@@ -1,6 +1,9 @@
 # Build API
 FROM node:18-alpine
 
+# Installation des dépendances système nécessaires pour Prisma sur Alpine
+RUN apk add --no-cache openssl openssl1.1-compat
+
 WORKDIR /app
 
 COPY package*.json ./
