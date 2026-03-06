@@ -11,7 +11,7 @@ export const documentController = {
 
             // Secure fetch of the lease
             const bail = await prisma.bail.findFirst({
-                where: { id: bailId, organisationId: organisationId as string },
+                where: { id: bailId as string, organisationId: organisationId as string },
                 include: {
                     locataire: true,
                     espace: { include: { site: true } }
@@ -24,9 +24,9 @@ export const documentController = {
                 titre: 'Contrat de Bail',
                 dateGeneration: new Date().toLocaleDateString('fr-FR'),
                 isBail: true,
-                locataire: bail.locataire,
-                espace: bail.espace,
-                site: bail.espace.site,
+                locataire: (bail as any).locataire,
+                espace: (bail as any).espace,
+                site: (bail as any).espace.site,
                 // Format dates explicitly before sending to Handlebars
                 bail: {
                     ...bail,
@@ -48,7 +48,7 @@ export const documentController = {
             const organisationId = req.user!.organisationId;
 
             const paiement = await prisma.paiement.findFirst({
-                where: { id: paiementId, organisationId: organisationId as string },
+                where: { id: paiementId as string, organisationId: organisationId as string },
                 include: {
                     bail: {
                         include: {
@@ -69,10 +69,10 @@ export const documentController = {
                     ...paiement,
                     datePaiement: new Date(paiement.datePaiement).toLocaleDateString('fr-FR'),
                 },
-                bail: paiement.bail,
-                locataire: paiement.bail.locataire,
-                espace: paiement.bail.espace,
-                site: paiement.bail.espace.site
+                bail: (paiement as any).bail,
+                locataire: (paiement as any).bail.locataire,
+                espace: (paiement as any).bail.espace,
+                site: (paiement as any).bail.espace.site
             });
 
             res.setHeader('Content-Type', 'application/pdf');

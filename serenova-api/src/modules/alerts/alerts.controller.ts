@@ -39,12 +39,12 @@ export const alertsController = {
             const organisationId = req.user!.organisationId;
 
             const existing = await prisma.alerte.findFirst({
-                where: { id, organisationId: organisationId as string }
+                where: { id: id as string, organisationId: organisationId as string }
             });
 
             const alert = await prisma.alerte.update({
-                where: { id },
-                data: { statut }
+                where: { id: id as string },
+                data: { statut: statut as string }
             });
 
             res.json({ success: true, message: 'Statut de l\'alerte mis à jour.', data: alert });

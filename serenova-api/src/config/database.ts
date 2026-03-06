@@ -21,11 +21,11 @@ export const prisma = basePrisma.$extends({
 
                 if (context?.organisationId && modelsWithOrg.includes(model)) {
                     if (['findMany', 'findFirst', 'count', 'aggregate', 'groupBy'].includes(operation)) {
-                        args.where = { ...args.where, organisationId: context.organisationId };
+                        (args as any).where = { ...(args as any).where, organisationId: context.organisationId };
                     }
 
                     if (['update', 'updateMany', 'upsert', 'delete', 'deleteMany'].includes(operation)) {
-                        args.where = { ...args.where, organisationId: context.organisationId };
+                        (args as any).where = { ...(args as any).where, organisationId: context.organisationId };
                     }
 
                     if (operation === 'create' || operation === 'createMany') {

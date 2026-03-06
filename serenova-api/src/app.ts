@@ -22,6 +22,7 @@ import saasConfigRoutes from './modules/saas-config/saas-config.routes';
 import billingRoutes from './modules/billing/billing.routes';
 import documentRoutes from './modules/document/document.routes';
 import alertsRoutes from './modules/alerts/alerts.routes';
+import { prisma } from './config/database';
 import searchRoutes from './modules/search/search.routes';
 import { initFirebase } from './config/firebase';
 import { initScheduler, stopScheduler } from './jobs/scheduler';
