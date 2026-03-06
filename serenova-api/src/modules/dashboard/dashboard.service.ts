@@ -114,7 +114,6 @@ export const dashboardService = {
                         type: a.type,
                         message: a.message,
                         montant: montantInfo,
-                        montant: montantInfo,
                         locataire: a.bail?.locataire ? `${a.bail.locataire.prenom || ''} ${a.bail.locataire.nom}`.trim() : 'N/A',
                         espace: a.bail?.espace?.identifiant || 'N/A',
                         bailId: a.bail?.id,

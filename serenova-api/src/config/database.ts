@@ -33,10 +33,13 @@ export const prisma = basePrisma.$extends({
                     }
 
                     if (operation === 'create' || operation === 'createMany') {
-                        if (Array.isArray(args.data)) {
-                            args.data = args.data.map((item: any) => ({ ...item, organisationId: context.organisationId }));
-                        } else {
-                            args.data = { ...args.data, organisationId: context.organisationId };
+                        const anyArgs = args as any;
+                        if (anyArgs.data) {
+                            if (Array.isArray(anyArgs.data)) {
+                                anyArgs.data = anyArgs.data.map((item: any) => ({ ...item, organisationId: context.organisationId }));
+                            } else {
+                                anyArgs.data = { ...anyArgs.data, organisationId: context.organisationId };
+                            }
                         }
                     }
                 }
