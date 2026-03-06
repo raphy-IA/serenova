@@ -20,6 +20,9 @@ export const prisma = basePrisma.$extends({
                 ];
 
                 if (context?.organisationId && modelsWithOrg.includes(model)) {
+                    // S'assurer que args existe
+                    args = args || {};
+
                     if (['findMany', 'findFirst', 'count', 'aggregate', 'groupBy'].includes(operation)) {
                         (args as any).where = { ...(args as any).where, organisationId: context.organisationId };
                     }
